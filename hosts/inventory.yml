@@ -1,0 +1,8 @@
+all:
+  children:
+    rasp3:
+      hosts:
+        rasp3-01:
+    rasp4:
+      hosts:
+        rasp4-01:
