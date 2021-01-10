@@ -10,6 +10,10 @@ If i would do this manually it would:
 
 - install rpi-imager 
   - `sudo apt install rpi-imager`
+- flash SD-Card
+- boot up
+- find ip adress
+- ssh
 
 
 
