@@ -1,8 +1,0 @@
----
-# This Playbook would setup the software for an microk8s cluster on rpi4
-
-- name: Just testing
-  hosts: rasp3
-
-  roles:
-    - checkConnection

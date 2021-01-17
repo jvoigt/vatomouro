@@ -1,0 +1,15 @@
+all:
+  children:
+    rasp3:
+      hosts:
+        rasp3-one:
+          ansible_host: 192.168.0.12
+          ansible_ssh_user: ubuntu
+          ansible_ssh_pass: "useVaultForPassword!!!"
+    rasp4:
+      hosts:
+        rasp4-one:
+          ansible_host: 192.168.0.13
+          ansible_ssh_user: ubuntu
+          ansible_ssh_pass: "useVaultForPassword!!!"
+
