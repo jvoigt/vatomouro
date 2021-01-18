@@ -3,9 +3,21 @@
 # this playbook will bootstrap the pi and prepare everything for setting up the microk8s
 
 - hosts: all
-  # become: true
+  become: true
+  pre_tasks:
+
+  - name: install updates (Ubuntu)
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: all
+  become: true
   roles:
     - ping
-    - add_ssh_key
     - add_user
-    - setup_networking
+
+# - hosts: rasps
+#   roles:
+#     - setup_networking
