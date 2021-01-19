@@ -1,2 +1,9 @@
-- name: just a ping
-  ping:
+# See: https://www.linuxtechi.com/assign-static-ip-address-ubuntu-20-04-lts
+
+- name: Netplan - disable networkconfig 
+  copy:
+    src: 999-disable-network-config.cfg
+    dest: /etc/cloud/cloud.cfg.d/999-disable-network-config.cfg
+    owner: root
+    group: root
+    mode: 644
