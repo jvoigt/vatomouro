@@ -1,0 +1,15 @@
+#!/usr/bin/env ansible-playbook
+---
+# this playbook will read all the temps of the hosts
+
+- hosts: all
+  become: true
+  tasks:
+
+    - name: cating thermal_zone0
+      command: cat /sys/class/thermal/thermal_zone0/temp
+      register: temp
+
+    - name: output the temps
+      debug:
+        msg: "Temp: {{temp.stdout_lines}}"

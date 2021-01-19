@@ -1,0 +1,12 @@
+#!/usr/bin/env ansible-playbook
+---
+# this playbook will shutdown all hosts good night
+
+- name: shutdown all hosts
+  become: true
+  hosts: "all"
+
+  tasks:
+  - name: shutdown hosts
+    command: /sbin/shutdown -h now
+    ignore_errors: 'yes'

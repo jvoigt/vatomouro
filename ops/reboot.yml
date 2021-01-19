@@ -1,0 +1,10 @@
+#!/usr/bin/env ansible-playbook
+---
+# this playbook will reboot all hosts see you on the other side
+
+- hosts: all
+  become: true
+  tasks:
+  - name: Reboot with some delay
+    reboot:
+      reboot_timeout: 3600
