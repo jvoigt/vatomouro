@@ -1,0 +1,4 @@
+- include_tasks: add_ssh_host_entry.yml
+  loop: "{{ query('inventory_hostnames', 'rasps') }}"
+  loop_control:
+    loop_var: host_entry

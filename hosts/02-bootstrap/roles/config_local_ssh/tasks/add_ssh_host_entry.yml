@@ -1,0 +1,9 @@
+- name: Insert ssh config for {{ host_entry }} for local user
+  blockinfile:
+    path: ~/.ssh/config
+    block: |
+      Host {{ host_entry }}
+        Hostname {{ hostvars[host_entry].vato_host_ip}}
+        IdentityFile ~/.ssh/id_ed25519_vato
+        User vato
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ host_entry }}"
