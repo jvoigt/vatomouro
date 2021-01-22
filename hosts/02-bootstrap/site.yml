@@ -17,6 +17,9 @@
   roles:
     - ping
     - add_user
+    - register_ssh
+    - setup_networking
+    - ping
 
 # - hosts: rasps
 #   roles:

@@ -16,7 +16,24 @@
     group: root
     mode: 0644
 
-- name: Apply netplan
+- name: Hostname - set Hostname
+  hostname:
+    name: "{{ inventory_hostname }}"
+
+# - name: Hostname - add other to /etc/hosts
+#   blockinfile:
+#     path: /etc/hosts
+#     block: |
+#       {{ item.ip }} {{ item.name }}
+#     marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
+#   loop:
+#     - { name: host1, ip: 10.10.1.10 }
+#     - { name: host2, ip: 10.10.1.11 }
+#     - { name: host3, ip: 10.10.1.12 }
+
+# if we apply the netplan the current ip might change, so we may lost the connection,
+# using async will prevent that.
+- name: Netplan - Apply netplan
   become: yes
   command: netplan apply
   async: 45
