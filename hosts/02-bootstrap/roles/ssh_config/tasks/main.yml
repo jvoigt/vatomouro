@@ -1,0 +1,21 @@
+- name: add ssh key for vato
+  authorized_key:
+    user: vato
+    state: present
+    key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_ed25519_vato.pub') }}"
+
+- name: debug hostvar
+  debug:
+    msg: "hostvar {{ vato_host_addresses }}"
+
+- name: debug allvar
+  debug:
+    msg: "allvar {{ vato_ssh_users }}"
+
+- name: generate sshd_config
+  template:
+    src: sshd_config.j2
+    dest: /etc/ssh/sshd_config
+    owner: root
+    mode: 0644
+  notify: restart_sshd

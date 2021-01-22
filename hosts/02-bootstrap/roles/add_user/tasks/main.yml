@@ -10,10 +10,3 @@
     owner: root
     group: root
     mode: 0440
-
-- name: add ssh key for vato
-  authorized_key:
-    user: vato
-    state: present
-    key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_ed25519_vato.pub') }}"
-
