@@ -5,8 +5,10 @@
 - name: shutdown all hosts
   become: true
   hosts: "all"
+  gather_facts: no
 
   tasks:
   - name: shutdown hosts
     command: /sbin/shutdown -h now
-    ignore_errors: 'yes'
+    ignore_errors: yes
+    ignore_unreachable: yes
