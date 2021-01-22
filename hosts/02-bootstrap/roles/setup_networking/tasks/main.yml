@@ -7,3 +7,17 @@
     owner: root
     group: root
     mode: 644
+
+- name: Netplan - add networkconfig
+  template:
+    src: 00-installer-config.yaml.j2
+    dest: /etc/netplan/00-installer-config.yaml
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Apply netplan
+  become: yes
+  command: netplan apply
+  async: 45
+  poll: 0
