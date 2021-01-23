@@ -1,5 +1,3 @@
-# See: https://www.linuxtechi.com/assign-static-ip-address-ubuntu-20-04-lts
-
 - name: Netplan - disable networkconfig 
   copy:
     src: 999-disable-network-config.cfg
