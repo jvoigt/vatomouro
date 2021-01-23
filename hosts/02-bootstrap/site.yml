@@ -12,16 +12,14 @@
       update_cache: yes
     when: ansible_distribution == "Ubuntu"
 
-- hosts: all
-  become: true
-  roles:
-    - ping
-    - add_user
-    - register_ssh
-    - setup_networking
-    - ping
-
 - hosts: 127.0.0.1
   connection: local
   roles:
     - config_local_ssh
+
+- hosts: all
+  become: true
+  roles:
+    - add_user
+    - register_ssh
+    - setup_networking

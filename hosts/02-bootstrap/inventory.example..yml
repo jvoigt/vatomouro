@@ -1,15 +1,36 @@
 all:
-  children:
-    rasp3:
-      hosts:
-        rasp3-one:
-          ansible_host: 192.168.0.12
-          ansible_ssh_user: ubuntu
-          ansible_ssh_pass: "useVaultForPassword!!!"
-    rasp4:
-      hosts:
-        rasp4-one:
-          ansible_host: 192.168.0.13
-          ansible_ssh_user: ubuntu
-          ansible_ssh_pass: "useVaultForPassword!!!"
-
+  hosts:
+    rasp3-one:
+      ansible_host: 192.168.0.1
+      ansible_ssh_user: ubuntu
+      ansible_ssh_pass: "USE VAULT"
+      vato_host_net_interface: "enxb827ebea3fd0" # only on rasp3
+      vato_host_ip: "192.168.3.1"
+      vato_host_addresses: "[{{ vato_host_ip }}/21]"
+    rasp4-one:
+      ansible_host: 192.168.0.13
+      ansible_ssh_user: ubuntu
+      ansible_ssh_pass: "USE VAULT"
+      vato_host_ip: "192.168.4.1"
+      vato_host_addresses: "[{{ vato_host_ip }}/21]"
+    rasp4-two:
+      ansible_host: 192.168.0.2
+      ansible_ssh_user: ubuntu
+      ansible_ssh_pass: "USE VAULT"
+      vato_host_ip: "192.168.4.2"
+      vato_host_addresses: "[{{ vato_host_ip }}/21]"
+    rasps:
+      vars:
+        vato_ssh_users: "vato ubuntu"
+        vato_hosts_gateway4: "192.168.0.1"
+        vato_hosts_dns_addresses : "[192.0.0.200, 8.8.8.8]"
+        vato_host_net_interface: "eth0"
+      children:
+        rasp3s:
+          hosts:
+            rasp3-one:
+        rasp4s:
+          hosts:
+            rasp4-one:
+            rasp4-two:
+            rasp4-three:
