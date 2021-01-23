@@ -1,0 +1,29 @@
+# See: https://www.linuxtechi.com/assign-static-ip-address-ubuntu-20-04-lts
+
+- name: Netplan - disable networkconfig 
+  copy:
+    src: 999-disable-network-config.cfg
+    dest: /etc/cloud/cloud.cfg.d/999-disable-network-config.cfg
+    owner: root
+    group: root
+    mode: 644
+
+- name: Netplan - add networkconfig
+  template:
+    src: 00-installer-config.yaml.j2
+    dest: /etc/netplan/00-installer-config.yaml
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Hostname - set Hostname
+  hostname:
+    name: "{{ inventory_hostname }}"
+
+# if we apply the netplan the current ip might change, so we may lost the connection,
+# using async will prevent that.
+- name: Netplan - Apply netplan
+  become: yes
+  command: netplan apply
+  async: 45
+  poll: 0

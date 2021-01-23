@@ -7,7 +7,7 @@ The purpose of this is more for learning so dont expect anything interessting or
 ## Specs of the clusters
 
 Hardware:
-- 1 Raspberry Pi 4 Mod. B
+- 3 Raspberry Pi 4 Mod. B
     - 8 GB RAM
     - 16 GB SD-Card
 - old Ethernet-switch

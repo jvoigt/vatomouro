@@ -1,0 +1,12 @@
+- name: create vato user
+  user:
+    name: vato
+    groups: root
+
+- name: add sudoers file for vato
+  copy:
+    src: sudoer_vato
+    dest: /etc/sudoers.d/vato
+    owner: root
+    group: root
+    mode: 0440
