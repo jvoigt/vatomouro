@@ -3,7 +3,6 @@
 # this playbook will read all the temps of the hosts
 
 - hosts: all
-  become: true
   tasks:
 
     - name: cating thermal_zone0

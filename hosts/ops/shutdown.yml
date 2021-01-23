@@ -6,9 +6,7 @@
   become: true
   hosts: "all"
   gather_facts: no
-
   tasks:
-  - name: shutdown hosts
-    command: /sbin/shutdown -h now
-    ignore_errors: yes
-    ignore_unreachable: yes
+
+  - name: down the remote nodes
+    community.general.shutdown:
