@@ -1,0 +1,46 @@
+- name: install snapd
+  apt:
+    name: snapd
+    update_cache: yes
+    state: present
+
+- name: install microk8s
+  become: yes
+  snap:
+    name: microk8s
+    state: present
+    classic: yes
+    channel: latest/stable
+
+# sudo usermod -a -G microk8s $USER
+- name: add user to microk8s group
+  user:
+    name: vato
+    append: yes
+    groups: microk8s
+
+# reset connection so the usermod kicks in
+# su - $USER
+- name: reset ssh connection
+  meta: reset_connection
+
+# microk8s status --wait-ready
+- name: wait for microk8s
+  command: microk8s status --wait-ready
+  register: microk8s_status
+
+- name: output the status
+  debug:
+    msg: "microk8s_status: {{microk8s_status}}"
+
+
+# sudo chown -f -R $USER ~/.kube
+# - name: Change .kube files permission
+#   file:
+#     path: $HOME/.kube/
+#     owner: vato
+
+# cd $HOME
+# mkdir .kube
+# cd .kube
+# microk8s config > config
