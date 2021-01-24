@@ -1,8 +1,0 @@
----
-# This playbook checks if the control node can connect to the nodes
-
-- name: check Connection to nodes
-  ping:
-#
-# - name: Print the Name of the node
-  

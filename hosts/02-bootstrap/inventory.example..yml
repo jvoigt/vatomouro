@@ -21,7 +21,8 @@ all:
       vato_host_addresses: "[{{ vato_host_ip }}/21]"
     rasps:
       vars:
-        vato_ssh_users: "vato ubuntu"
+        vato_ssh_users: "vato ubuntu" # we should not allow the ubuntu user anymore (as it is the default)
+        # vato_ssh_users: "vato" # if you just use the vato user here you cannot run this inventory again as you will loxk ubuntu out
         vato_hosts_gateway4: "192.168.0.1"
         vato_hosts_dns_addresses : "[192.0.0.200, 8.8.8.8]"
         vato_host_net_interface: "eth0"

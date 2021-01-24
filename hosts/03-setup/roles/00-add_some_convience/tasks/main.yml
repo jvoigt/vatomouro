@@ -1,0 +1,10 @@
+# add some convience packages and config
+
+# Set shell to bash
+# sudo usermod -s /bin/bash username or sudo chsh -s /bin/bash usernam
+- name: enable bash tru user
+  become: yes
+  user:
+    name: vato
+    shell: /bin/bash
+
