@@ -1,0 +1,34 @@
+# microk8s add-node
+
+We have to do this for each un joined node.
+
+- name: create cluster
+  command: microk8s add-node
+  register: add_node_output
+
+- name: debug join token:
+  debug:
+    msg: "Join with: {{
+      add_node_output['stdout']
+      | regex_search(
+          hostvars[inventory_hostname]['ansible_default_ipv4']['address'] + ':25000/(.{32})'
+        )
+       }}"
+
+- name: store as in-memory inventory.
+  add_host:
+    hostname: local_inv
+    local_token: "{{
+      add_node_output['stdout']
+      | regex_search(
+          hostvars[inventory_hostname]['ansible_default_ipv4']['address'] + ':25000/(.{32})'
+        )
+       }}"
+
+# Join node with:
+# microk8s join ip-172-31-20-243:25000/DDOkUupkmaBezNnMheTBqFYHLWINGDbf
+# If the node you are adding is not reachable through the default
+# interface you can use one of the following:
+# microk8s join 10.1.84.0:25000/DDOkUupkmaBezNnMheTBqFYHLWINGDbf
+# microk8s join 10.22.254.77:25000/DDOkUupkmaBezNnMheTBqFYHLWINGDbf
+# microk8s join ip-172-31-20-243:25000/DDOkUupkmaBezNnMheTBqFYHLWINGDbf

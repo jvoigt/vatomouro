@@ -1,0 +1,21 @@
+# microk8s add-node
+
+- name: Debug Join command
+  debug:
+    msg: "JOIN  {{ inventory_hostname }} - microk8s join {{ hostvars['local_inv']['local_token'] }}"
+
+- name: Join the cluster  hello frends
+  command: "microk8s join {{ hostvars['local_inv']['local_token'] }}"
+  register: joining_output
+
+- name: Debug Join output
+  debug:
+    msg: "output  {{ joining_output }}"
+
+# Join node with:
+# microk8s join ip-172-31-20-243:25000/DDOkUupkmaBezNnMheTBqFYHLWINGDbf
+# If the node you are adding is not reachable through the default
+# interface you can use one of the following:
+# microk8s join 10.1.84.0:25000/DDOkUupkmaBezNnMheTBqFYHLWINGDbf
+# microk8s join 10.22.254.77:25000/DDOkUupkmaBezNnMheTBqFYHLWINGDbf
+# microk8s join ip-172-31-20-243:25000/DDOkUupkmaBezNnMheTBqFYHLWINGDbf
