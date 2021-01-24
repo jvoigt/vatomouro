@@ -1,0 +1,19 @@
+#!/usr/bin/env ansible-playbook
+---
+# this playbook wil setup the microk8s
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: install updates (Ubuntu)
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: all
+  become: true
+  roles:
+    - 00-add_some_convience
+    - 01-prepare_cgroups

@@ -1,0 +1,4 @@
+# Reboot with some delay
+- name: reboot_delayed
+  reboot:
+    reboot_timeout: 3600
