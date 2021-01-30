@@ -1,34 +1,32 @@
-# microk8s add-node
+# This play should only be run by the 'main' node of the cluster.
 
-We have to do this for each un joined node.
-
-- name: create cluster
+- name: create cluster as cluster_main
   command: microk8s add-node
-  register: add_node_output
+  register: joining_tokens
+  with_items: "{{ groups['cluster_leaf'] }}"
+# We have to do this for each unjoined 'leaf' node.
+  when: "{{inventory_hostname in groups['cluster_main']}}"
 
-- name: debug join token:
+# output is like this
+# ....
+# "stdout_lines": [
+#   "From the node you wish to join to this cluster, run the following:",
+#   "microk8s join 192.168.0.241:25000/b45ea7ec9fee481a0fba08e22c86795c",
+#   "",
+#   "If the node you are adding is not reachable through the default interface you can use one of the following:",
+#   " microk8s join 192.168.0.241:25000/b45ea7ec9fee481a0fba08e22c86795c",
+#   " microk8s join 192.168.0.13:25000/b45ea7ec9fee481a0fba08e22c86795c",
+#   " microk8s join 10.1.93.192:25000/b45ea7ec9fee481a0fba08e22c86795c"
+# ],
+# ...
+
+- name: join cluster as cluster_leaf
+  command: "{{ item['stdout_lines'][1] }}"
+  register: joining_outputs
+  delegate_to: "{{ item['item'] }}"
+  with_items: "{{ joining_tokens.results }}"
+  when: "{{inventory_hostname in groups['cluster_main']}}"
+
+- name: debug output of joining
   debug:
-    msg: "Join with: {{
-      add_node_output['stdout']
-      | regex_search(
-          hostvars[inventory_hostname]['ansible_default_ipv4']['address'] + ':25000/(.{32})'
-        )
-       }}"
-
-- name: store as in-memory inventory.
-  add_host:
-    hostname: local_inv
-    local_token: "{{
-      add_node_output['stdout']
-      | regex_search(
-          hostvars[inventory_hostname]['ansible_default_ipv4']['address'] + ':25000/(.{32})'
-        )
-       }}"
-
-# Join node with:
-# microk8s join ip-172-31-20-243:25000/DDOkUupkmaBezNnMheTBqFYHLWINGDbf
-# If the node you are adding is not reachable through the default
-# interface you can use one of the following:
-# microk8s join 10.1.84.0:25000/DDOkUupkmaBezNnMheTBqFYHLWINGDbf
-# microk8s join 10.22.254.77:25000/DDOkUupkmaBezNnMheTBqFYHLWINGDbf
-# microk8s join ip-172-31-20-243:25000/DDOkUupkmaBezNnMheTBqFYHLWINGDbf
+    msg: "Join finished with: {{ joining_outputs }}"
