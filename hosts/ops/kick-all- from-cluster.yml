@@ -1,0 +1,17 @@
+#!/usr/bin/env ansible-playbook
+---
+# this playbook will remove all children for the ha-cluster
+
+- name: Kick them out ofthe cluster
+  become: true
+  hosts: "cluster_main"
+  tasks:
+
+  - name: Kick one out
+    command: "microk8s remove-node {{ hostvars[item]['ansible_default_ipv4']['address'] }}"
+    with_items: "{{ groups['cluster_leaf'] }}"
+    register: leaving_output
+
+  - name: Debug Kick output
+    debug:
+      msg: " {{ inventory_hostname }} has Kicked someone out {{leaving_output }}"
