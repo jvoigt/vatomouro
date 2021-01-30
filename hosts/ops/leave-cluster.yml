@@ -1,0 +1,17 @@
+#!/usr/bin/env ansible-playbook
+---
+# this playbook will remove all children for the ha-cluster
+
+- name: Abandon the cluster
+  become: true
+  hosts: "cluster_leaf"
+  tasks:
+
+  - name: Abandon the cluster
+    command: "microk8s leave"
+    register: leaving_output
+
+  - name: Debug Abandon output
+    debug:
+      msg: " {{ inventory_hostname }} has LEFT. {{leaving_output }}"
+

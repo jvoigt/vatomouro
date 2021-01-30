@@ -15,3 +15,10 @@ all:
             rasp4-one:
             rasp4-two:
             rasp4-three:
+        cluster_main:
+          hosts:
+            rasp4-one:
+        cluster_leaf:
+          hosts:
+            rasp4-two:
+            rasp4-three:

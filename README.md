@@ -10,7 +10,7 @@ Hardware:
 - 3 Raspberry Pi 4 Mod. B
   - 8 GB RAM
   - 16 GB SD-Card
-- 1 Raspberrs Pi 4 Mod. 3
+- 1 Raspberrs Pi 3 Mod. B
   - 1 GB RAM
   - 16 GB SD-Card
 - Ethernet-switch
@@ -20,6 +20,7 @@ Software:
 - ansible for managing the hosts
 - mikrok8s as manager for k8s
 
+Sadly the rasp3 is not strong enough. so we just can use it for test. microk8s wont run on it.
 ### Network topology
 As my router is an old sh*ty tincan i cannot use real subnets or anything crasy...
 
