@@ -1,5 +1,7 @@
 # This play should only be run by the 'main' node of the cluster.
 
+# FIXME: we should onyl do this when the nodes are not yet joined
+
 - name: create cluster as cluster_main
   command: microk8s add-node
   register: joining_tokens

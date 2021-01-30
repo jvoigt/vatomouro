@@ -26,3 +26,7 @@
   become: true
   roles:
     - 03-create_cluster
+
+- hosts: rasp4-one
+  roles:
+    - 04-add-kube-config-local
