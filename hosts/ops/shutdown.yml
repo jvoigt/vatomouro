@@ -2,11 +2,11 @@
 ---
 # this playbook will shutdown all hosts good night
 
-- name: shutdown all hosts
+- hosts: all
   become: true
-  hosts: "all"
   gather_facts: no
   tasks:
 
-  - name: down the remote nodes
+  - name: shut down the node
     community.general.shutdown:
+      delay: 60
