@@ -26,7 +26,7 @@
 
 # microk8s status --wait-ready
 - name: wait for microk8s
-  # command: microk8s status --wait-ready
-  command: microk8s status
+  command: microk8s status --wait-ready
+  # command: microk8s status
   register: microk8s_status
-  failed_when: "('microk8s is runnin' not in microk8s_status.stdout)"
+  failed_when: "('microk8s is running' not in microk8s_status.stdout)"

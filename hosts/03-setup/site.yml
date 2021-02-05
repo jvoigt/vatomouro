@@ -18,11 +18,11 @@
     - 00-add_some_convience
     - 01-prepare_cgroups
     - 02-install_microk8s
+    - 03-create_cluster
 
 - hosts: rasp4-one
   become: true
   roles:
-    - 03-create_cluster
     - 04-add-kube-config-local
     - 05-add_basic_microk8s_addons
     - 06-add_monitoring

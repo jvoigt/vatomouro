@@ -1,50 +1,40 @@
 # This play should only be run by the 'main' node of the cluster.
 
-# FIXME: we should onyl do this when the nodes are not yet joined
-
-- name: check if the node is in the cluster already
+- name: check if  all the node have a running microk8s
   command: "microk8s status"
   register: cluster_status
+  failed_when: "('microk8s is running' not in cluster_status.stdout)"
 
-- name: check if node not clusterd
-  with_items: "{{ groups['cluster_leaf'] }}"
-  # when: "{{ intem }}"
+- name: ip for node
   debug:
-    msg: "Setting: {{ item }}"
+    msg: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address']}}"
+  # with_items: "{{ groups['cluster_leaf'] }}"
 
+- name:
+  set_fact:
+    is_joined: "{{  hostvars[inventory_hostname]['ansible_default_ipv4']['address'] in cluster_status.stdout }}"
 
-- name: debug output of checking
+- name: is_joined
   debug:
-    msg: ""
+    msg: "Is: {{is_joined}}"
 
-# - name: create cluster as cluster_main
-#   command: microk8s add-node
-#   register: joining_tokens
-#   with_items: "{{ groups['cluster_leaf'] }}"
-# # We have to do this for each unjoined 'leaf' node.
-#   when: "{{inventory_hostname in groups['cluster_main']}}"
-#   failed_when: "('microk8s join' not in joining_tokens.stdout)"
+- name: request joining token from the first main node
+  delegate_to: "{{ groups['cluster_main'][0] }}"
+  command: microk8s add-node
+  register: joining_token
+  when: "{{ not is_joined and inventory_hostname in groups['cluster_leaf']}}"
+  failed_when: "('microk8s join' not in joining_token.stdout)"
 
-# # output is like this
-# # ....
-# # "stdout_lines": [
-# #   "From the node you wish to join to this cluster, run the following:",
-# #   "microk8s join 192.168.0.241:25000/b45ea7ec9fee481a0fba08e22c86795c",
-# #   "",
-# #   "If the node you are adding is not reachable through the default interface you can use one of the following:",
-# #   " microk8s join 192.168.0.241:25000/b45ea7ec9fee481a0fba08e22c86795c",
-# #   " microk8s join 192.168.0.13:25000/b45ea7ec9fee481a0fba08e22c86795c",
-# #   " microk8s join 10.1.93.192:25000/b45ea7ec9fee481a0fba08e22c86795c"
-# # ],
-# # ...
+- name: joining_token
+  debug:
+    msg: "Token {{ joining_token['stdout_lines'][1] }}"
+  when: "{{ not is_joined and inventory_hostname in groups['cluster_leaf']}}"
 
-# - name: join cluster as cluster_leaf
-#   command: "{{ item['stdout_lines'][1] }}"
-#   register: joining_outputs
-#   delegate_to: "{{ item['item'] }}"
-#   with_items: "{{ joining_tokens.results }}"
-#   when: "{{inventory_hostname in groups['cluster_main']}}"
+- name: join cluster as cluster_leaf
+  command: "{{ joining_token['stdout_lines'][1] }}"
+  register: joining_output
+  when: "{{ not is_joined and inventory_hostname in groups['cluster_leaf']}}"
 
-# - name: debug output of joining
-#   debug:
-#     msg: "Join finished with: {{ joining_outputs }}"
+- name: joining_output
+  debug:
+    msg: "Join finished with: {{ joining_output }}"
