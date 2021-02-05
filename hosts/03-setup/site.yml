@@ -23,6 +23,11 @@
 - hosts: rasp4-one
   become: true
   roles:
-    - 04-add-kube-config-local
     - 05-add_basic_microk8s_addons
     - 06-add_monitoring
+
+- hosts: rasp4-one
+  become: true
+  # connection: local
+  roles:
+    - 99-add-kube-config-local
