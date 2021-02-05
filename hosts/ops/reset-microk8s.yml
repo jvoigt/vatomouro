@@ -1,0 +1,15 @@
+#!/usr/bin/env ansible-playbook
+---
+# this playbook will reset the cluster
+# https://microk8s.io/docs/commands#heading--microk8s-reset
+
+- name: reset microk8s  for the cluster
+  become: true
+  hosts: all
+  tasks:
+
+  - name: uninstall microk8s
+    become: yes
+    snap:
+      name: microk8s
+      state: absent

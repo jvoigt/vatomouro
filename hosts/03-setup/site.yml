@@ -15,18 +15,14 @@
 - hosts: all
   become: true
   roles:
-    - 02-install_microk8s
-
-- hosts: rasp4s
-  become: true
-  roles:
+    - 00-add_some_convience
+    - 01-prepare_cgroups
     - 02-install_microk8s
 
 - hosts: rasp4-one
   become: true
   roles:
     - 03-create_cluster
-
-- hosts: rasp4-one
-  roles:
     - 04-add-kube-config-local
+    - 05-add_basic_microk8s_addons
+    - 06-add_monitoring

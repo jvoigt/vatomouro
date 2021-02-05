@@ -1,0 +1,45 @@
+# This play should only be run by the 'main' node of the cluster.
+# Those Addons will install on all nodes per default
+
+# The enable commadn  responses like
+# Helm 3 is enabled
+# Addon helm3 is already enabled.
+# Nothing to do for `foofoo`
+
+
+- name: add some basic addons - dns
+  command: "microk8s enable dns"
+  register: output
+  environment:
+    LC_ALL: C.UTF-8
+    LANG: C.UTF-8
+  failed_when: "('is enabled' not in output.stdout) and ('already enabled.' not in output.stdout)"
+  changed_when: "'already enabled.' not in output.stdout"
+
+- name: add some basic addons - storage
+  command: "microk8s enable storage"
+  register: output
+  environment:
+    LC_ALL: C.UTF-8
+    LANG: C.UTF-8
+  failed_when: "('is enabled' not in output.stdout) and ('already enabled.' not in output.stdout)"
+  changed_when: "'already enabled.' not in output.stdout"
+
+- name: add some basic addons - metallb
+  command: "microk8s enable metallb:{{ metallb-range }} "
+  register: output
+  environment:
+    LC_ALL: C.UTF-8
+    LANG: C.UTF-8
+  failed_when: "('is enabled' not in output.stdout) and ('already enabled.' not in output.stdout)"
+  changed_when: "'already enabled.' not in output.stdout"
+
+# this will only install helm on the current nodes
+- name: add some basic addons - helm
+  command: "microk8s enable helm3"
+  register: output
+  environment:
+    LC_ALL: C.UTF-8
+    LANG: C.UTF-8
+  failed_when: "('is enabled' not in output.stdout) and ('already enabled.' not in output.stdout)"
+  changed_when: "'already enabled.' not in output.stdout"

@@ -1,0 +1,23 @@
+# This play should only be run by the 'main' node of the cluster.
+#  as those Addons will install on all nodes per default
+
+- name: add some basic addons - metrics-server
+  command: "microk8s enable metrics-server"
+  register: output
+  environment:
+    LC_ALL: C.UTF-8
+    LANG: C.UTF-8
+  failed_when: "('is enabled' not in output.stdout) and ('already enabled.' not in output.stdout)"
+  changed_when: "'already enabled.' not in output.stdout"
+
+- name: add some basic addons - prometheus
+  command: "microk8s enable prometheus"
+  register: output
+  environment:
+    LC_ALL: C.UTF-8
+    LANG: C.UTF-8
+  failed_when: "('is enabled' not in output.stdout) and ('already enabled.' not in output.stdout)"
+  changed_when: "'already enabled.' not in output.stdout"
+# TODO: "The Prometheus operator is enabled (user/pass: admin/admin)"
+# We need to fix that, as we probalby want a none defautl password
+

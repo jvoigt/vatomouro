@@ -6,6 +6,8 @@ all:
     rasp4-three:
   children:
     rasps:
+      vars:
+        metallb-range: "192.168.0.100-192.168.0.199"
       children:
         rasp3s:
           hosts:

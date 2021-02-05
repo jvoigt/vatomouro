@@ -1,3 +1,4 @@
 hosts/02-bootstrap/inventory.yml
 hosts/02-bootstrap/inventory.copy.yml
 hosts/02-bootstrap/inventory.vato.yml
+hosts/ops/debug.yml
