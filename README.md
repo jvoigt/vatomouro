@@ -32,3 +32,18 @@ As my router is an old sh*ty tincan i cannot use real subnets or anything crasy.
 192.168.0.231 - 192.168.0.239 the vato nodes rpi3
 192.168.0.241 - 192.168.0.249 the vato nodes rpi4
 
+# Structure
+
+This project is structured in several sub directories.
+
+## /hosts
+
+Contains everything related to the setup of the host nodes.
+When everything is run there you should have a somewhat plain kubernetes cluster.
+Most of this is written with ansible.
+
+
+## /cluster
+
+Contains everything running in the cluster.
+Subdirs are representing the namespaces with in the cluster.

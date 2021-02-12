@@ -2,7 +2,7 @@ apiVersion: v1
 clusters:
   {{ mlusters | to_nice_yaml(width=80, indent=2) | indent(2) }}
 contexts:
-  {{montexts | to_nice_yaml(width=80, indent=2) | indent(2) }}
+  {{ montexts | to_nice_yaml(width=80, indent=2) | indent(2) }}
 current-context: {{ set_context }}
 kind: Config
 preferences: {}

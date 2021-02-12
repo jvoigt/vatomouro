@@ -1,5 +1,5 @@
 - name: get kubeconfig from cluster_main node
-  # delegate_to: rasp4-one
+  delegate_to: rasp4-one
   command: microk8s config
   register: microk8s_config_output
 
