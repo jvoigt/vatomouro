@@ -10,6 +10,10 @@
     dest: ~/.kube/config
     force: no
 
+# TODO: fix permissions 
+# WARNING: Kubernetes configuration file is group-readable. This is insecure. Location: /home/j.voigt/.kube/config
+# WARNING: Kubernetes configuration file is world-readable. This is insecure. Location: /home/j.voigt/.kube/config
+
 - name: readout the existing config
   delegate_to: 127.0.0.1
   command: cat ~/.kube/config

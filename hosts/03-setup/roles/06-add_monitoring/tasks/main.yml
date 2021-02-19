@@ -21,3 +21,4 @@
 # TODO: "The Prometheus operator is enabled (user/pass: admin/admin)"
 # We need to fix that, as we probalby want a none defautl password
 
+# TODO: Add service to connect from the outside

@@ -24,4 +24,5 @@
   become: true
   roles:
     - 04-add_basic_microk8s_addons
-    - 05-add_monitoring
+    - 05-add_load_balancing_microk8s_addons
+    - 06-add_monitoring

@@ -24,24 +24,6 @@
   failed_when: "('is enabled' not in output.stdout) and ('already enabled.' not in output.stdout)"
   changed_when: "'already enabled.' not in output.stdout"
 
-- name: add some basic addons - metallb
-  command: "microk8s enable metallb:{{ metallb_range }} "
-  register: output
-  environment:
-    LC_ALL: C.UTF-8
-    LANG: C.UTF-8
-  failed_when: "('Storage will be available soon' not in output.stdout) and ('already enabled.' not in output.stdout)"
-  changed_when: "'already enabled.' not in output.stdout"
-
-- name: add some basic addons - ingress
-  command: "microk8s enable ingress "
-  register: output
-  environment:
-    LC_ALL: C.UTF-8
-    LANG: C.UTF-8
-  failed_when: "('is enabled' not in output.stdout) and ('already enabled.' not in output.stdout)"
-  changed_when: "'already enabled.' not in output.stdout"
-
 # this will only install helm on the current node
 - name: add some basic addons - helm
   command: "microk8s enable helm3"
