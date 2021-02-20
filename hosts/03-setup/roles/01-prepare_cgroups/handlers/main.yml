@@ -1,5 +1,6 @@
 # Reboot and reconnect so we can continue
 - name: reboot_and_comeback
+  become: yes
   reboot:
     msg: "Reboot initiated by Ansible... there is still work to be done"
     connect_timeout: 5

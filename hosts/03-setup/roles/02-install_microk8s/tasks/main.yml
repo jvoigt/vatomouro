@@ -1,4 +1,5 @@
 - name: install snapd
+  become: yes
   apt:
     name: snapd
     update_cache: yes
@@ -14,10 +15,20 @@
 
 # sudo usermod -a -G microk8s $USER
 - name: add user to microk8s group
+  become: yes
   user:
     name: vato
     append: yes
     groups: microk8s
+
+- name: set permissions on .kube dir
+  become: yes
+  file:
+    path: ~/.kube/
+    state: directory
+    recurse: yes
+    owner: vato
+    group: vato
 
 # reset connection so the usermod kicks in
 # su - $USER
@@ -27,6 +38,9 @@
 # microk8s status --wait-ready
 - name: wait for microk8s
   command: microk8s status --wait-ready
-  # command: microk8s status
   register: microk8s_status
   failed_when: "('microk8s is running' not in microk8s_status.stdout)"
+
+- name: debug the status
+  debug:
+    msg: "Status: {{ microk8s_status }}"

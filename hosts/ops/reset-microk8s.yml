@@ -3,13 +3,22 @@
 # this playbook will reset the cluster
 # https://microk8s.io/docs/commands#heading--microk8s-reset
 
-- name: reset microk8s  for the cluster
-  become: true
+- name: remove microk8s for the cluster
   hosts: all
   tasks:
 
-  - name: uninstall microk8s
+  # - name: uninstall microk8s as snap
+  #   become: yes
+  #   snap:
+  #     name: microk8s
+  #     state: absent
+  # # TODO: i have the feeling we need the --purge option, but ansible does not offer this
+
+  - name: remove microk8s manually
     become: yes
-    snap:
-      name: microk8s
-      state: absent
+    command: snap remove microk8s --purge
+    register: remove_output
+    failed_when: "('microk8s removed' not in remove_output.stdout) and ('is not installed' not in remove_output.stderr)"
+    changed_when: "('microk8s removed' in remove_output.stdout)"
+
+# microk8s reset [--destroy-storage]

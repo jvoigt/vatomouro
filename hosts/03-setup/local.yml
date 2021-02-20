@@ -1,4 +1,0 @@
-- hosts: rasp4-one
-# - hosts: 127.0.0.1
-  roles:
-    - 99-add-kube-config-local
