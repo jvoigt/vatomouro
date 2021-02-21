@@ -6,35 +6,17 @@
   register: cluster_status
   failed_when: "('microk8s is running' not in cluster_status.stdout)"
 
-- name: request a token debug
-  debug:
-    msg: 
-    - "REQUEST: {{inventory_hostname}} TO {{ item }}"
-    - "JOINED: {{ hostvars[item]['ansible_default_ipv4']['address'] in cluster_status.stdout }}"
-    - "HOSTVARS: {{ hostvars[item] }}"
-  register: tokens
-  when: "inventory_hostname in groups['cluster_main'] and {{ hostvars[item]['ansible_default_ipv4']['address'] not in cluster_status.stdout }}"
-  loop: "{{groups['cluster_leaf']}}"
-
 - name: request a token
   command: microk8s add-node
   register: tokens
-  when: "inventory_hostname in groups['cluster_main'] and {{ hostvars[item]['ansible_default_ipv4']['address'] not in cluster_status.stdout }}"
+  when: "inventory_hostname in groups['cluster_main'] and hostvars[item]['ansible_default_ipv4']['address'] not in cluster_status.stdout "
   loop: "{{groups['cluster_leaf']}}"
-
-- name: debug tokens
-  debug:
-    msg:
-    - "Tokens for : {{item.item}}"
-    - "JOIN {{ item.stdout_lines[1] }}"
-  when: "inventory_hostname in groups['cluster_main'] and {{ hostvars[item.item]['ansible_default_ipv4']['address'] not in cluster_status.stdout }}"
-  loop: "{{tokens.results}}"
 
 - name: join cluster as cluster_leaf
   delegate_to: "{{ item.item }}"
   command: "{{ item.stdout_lines[1] }}"
   register: joining_outputs
-  when: "inventory_hostname in groups['cluster_main'] and {{ hostvars[item.item]['ansible_default_ipv4']['address'] not in cluster_status.stdout }}"
+  when: "inventory_hostname in groups['cluster_main'] and hostvars[item.item]['ansible_default_ipv4']['address'] not in cluster_status.stdout"
   loop: "{{tokens.results}}"
 
 - name: debug joing outpu

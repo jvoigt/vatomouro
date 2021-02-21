@@ -29,6 +29,8 @@
     montexts: "{{ config['contexts'] + konfig['contexts']}}"
     set_context: "{{ konfig['contexts'][0]['name']}}"
 
+# TODO: We should handle if there is allready a config for the same cluster or an other microk8s cluster. 
+
 - name: write out config template
   delegate_to: 127.0.0.1
   when: "konfig['clusters'][0] not in config['clusters']"
