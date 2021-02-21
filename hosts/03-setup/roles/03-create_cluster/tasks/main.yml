@@ -1,40 +1,24 @@
-# This play should only be run by the 'main' node of the cluster.
+# This play should be run every node that should join the cluster.
+# This play book might be a little unstable...
 
-- name: check if  all the node have a running microk8s
+- name: check if all the node have a running microk8s
   command: "microk8s status"
   register: cluster_status
   failed_when: "('microk8s is running' not in cluster_status.stdout)"
 
-- name: ip for node
-  debug:
-    msg: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address']}}"
-  # with_items: "{{ groups['cluster_leaf'] }}"
-
-- name:
-  set_fact:
-    is_joined: "{{  hostvars[inventory_hostname]['ansible_default_ipv4']['address'] in cluster_status.stdout }}"
-
-- name: is_joined
-  debug:
-    msg: "Is: {{is_joined}}"
-
-- name: request joining token from the first main node
-  delegate_to: "{{ groups['cluster_main'][0] }}"
+- name: request a token
   command: microk8s add-node
-  register: joining_token
-  when: "{{ not is_joined and inventory_hostname in groups['cluster_leaf']}}"
-  failed_when: "('microk8s join' not in joining_token.stdout)"
-
-- name: joining_token
-  debug:
-    msg: "Token {{ joining_token['stdout_lines'][1] }}"
-  when: "{{ not is_joined and inventory_hostname in groups['cluster_leaf']}}"
+  register: tokens
+  when: "inventory_hostname in groups['cluster_main'] and hostvars[item]['ansible_default_ipv4']['address'] not in cluster_status.stdout "
+  loop: "{{groups['cluster_leaf']}}"
 
 - name: join cluster as cluster_leaf
-  command: "{{ joining_token['stdout_lines'][1] }}"
-  register: joining_output
-  when: "{{ not is_joined and inventory_hostname in groups['cluster_leaf']}}"
+  delegate_to: "{{ item.item }}"
+  command: "{{ item.stdout_lines[1] }}"
+  register: joining_outputs
+  when: "inventory_hostname in groups['cluster_main'] and hostvars[item.item]['ansible_default_ipv4']['address'] not in cluster_status.stdout"
+  loop: "{{tokens.results}}"
 
-- name: joining_output
+- name: debug joing outpu
   debug:
-    msg: "Join finished with: {{ joining_output }}"
+    msg: "OUTPUT {{ joining_outputs }}"

@@ -1,12 +1,13 @@
 # This play should only be run by the 'main' node of the cluster.
 # Those Addons will install on all nodes per default
 
+- name: add some basic addons - metallb
   command: "microk8s enable metallb:{{ metallb_range }} "
   register: output
   environment:
     LC_ALL: C.UTF-8
     LANG: C.UTF-8
-  failed_when: "('Storage will be available soon' not in output.stdout) and ('already enabled.' not in output.stdout)"
+  failed_when: "('is enabled' not in output.stdout) and ('already enabled.' not in output.stdout)"
   changed_when: "'already enabled.' not in output.stdout"
 
 - name: add some basic addons - ingress
@@ -17,3 +18,6 @@
     LANG: C.UTF-8
   failed_when: "('is enabled' not in output.stdout) and ('already enabled.' not in output.stdout)"
   changed_when: "'already enabled.' not in output.stdout"
+
+# TODO: maybe we shpuld add ngnix-ingress here
+# https://microk8s.io/docs/addon-metallb

@@ -9,10 +9,7 @@
     src: empty_config.yml
     dest: ~/.kube/config
     force: no
-
-# TODO: fix permissions 
-# WARNING: Kubernetes configuration file is group-readable. This is insecure. Location: /home/j.voigt/.kube/config
-# WARNING: Kubernetes configuration file is world-readable. This is insecure. Location: /home/j.voigt/.kube/config
+    mode: 0600
 
 - name: readout the existing config
   delegate_to: 127.0.0.1
@@ -25,16 +22,19 @@
     config:  "{{ existing_config_output['stdout'] | from_yaml }}"
 
 - name: check if there are diffenences between the configs
-  when: "{{ konfig['clusters'][0] not in config['clusters'] }}"
+  when: "konfig['clusters'][0] not in config['clusters']"
   set_fact:
     mlusters: "{{ config['clusters'] + konfig['clusters']}}"
     msers: "{{ config['users'] + konfig['users']}}"
     montexts: "{{ config['contexts'] + konfig['contexts']}}"
     set_context: "{{ konfig['contexts'][0]['name']}}"
 
+# TODO: We should handle if there is allready a config for the same cluster or an other microk8s cluster. 
+
 - name: write out config template
   delegate_to: 127.0.0.1
-  when: "{{ konfig['clusters'][0] not in config['clusters'] }}"
+  when: "konfig['clusters'][0] not in config['clusters']"
   template:
     src: kube_config.yml.j2
     dest: ~/.kube/config
+    mode: 0600

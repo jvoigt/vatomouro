@@ -3,17 +3,16 @@
 # this playbook wil setup the microk8s
 
 - hosts: all
-  become: true
   pre_tasks:
 
   - name: install updates (Ubuntu)
+    become: yes
     apt:
       upgrade: dist
       update_cache: yes
     when: ansible_distribution == "Ubuntu"
 
 - hosts: all
-  become: true
   roles:
     - 00-add_some_convience
     - 01-prepare_cgroups
@@ -21,8 +20,11 @@
     - 03-create_cluster
 
 - hosts: rasp4-one
-  become: true
   roles:
     - 04-add_basic_microk8s_addons
     - 05-add_load_balancing_microk8s_addons
     - 06-add_monitoring
+
+- hosts: rasp4-one
+  roles:
+    - 99-add-kube-config-local
