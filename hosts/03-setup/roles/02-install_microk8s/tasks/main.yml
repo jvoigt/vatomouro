@@ -44,3 +44,16 @@
 - name: debug the status
   debug:
     msg: "Status: {{ microk8s_status }}"
+
+  # microk8s config > config
+- name: get kubeconfig
+  delegate_to: rasp4-one
+  command: microk8s config
+  register: microk8s_config_output
+
+- name: create .kube config
+  copy:
+    content: "{{ microk8s_config_output.stdout }}"
+    dest: ~/.kube/config
+    force: no
+    mode: 0600
