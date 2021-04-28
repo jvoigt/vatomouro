@@ -21,3 +21,57 @@
 
 # TODO: maybe we shpuld add ngnix-ingress here
 # https://microk8s.io/docs/addon-metallb
+
+- name: install pip3
+# needed for the pip taks
+  become: yes
+  apt:
+    name: python3-pip
+    state: present
+
+- name: Install openshift python package
+  # needed by community.kubernetes
+  pip:
+    name: openshift
+
+# FIXME: remove this
+- name: test for k8s collection
+  community.kubernetes.k8s:
+    api_version: v1
+    kind: Namespace
+    name: testtest
+    state: present
+
+# TODO: hmm this is not working...
+# - name: add metallb loadbalancer for ingress as template
+#   # delegate_to: 127.0.0.1
+#   community.kubernetes.k8s:
+#     state: present
+#     template: "metallb-ingress-microk8s.yaml.j2"
+
+- name: add metallb loadbalancer for ingress Manual
+  community.kubernetes.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: metallb-ingress
+        namespace: ingress
+      spec:
+        selector:
+          name: metallb-ingress-microk8s
+        type: LoadBalancer
+        # loadBalancerIP is optional. MetalLB will automatically allocate an IP 
+        # from its pool if not specified. You can also specify one manually.
+        # loadBalancerIP: x.y.z.a
+        loadBalancerIP: "{{ metallb_end }}"
+        ports:
+          - name: http
+            protocol: TCP
+            port: 80
+            targetPort: 80
+          - name: https
+            protocol: TCP
+            port: 443
+            targetPort: 443

@@ -7,7 +7,9 @@ all:
   children:
     rasps:
       vars:
-        metallb_range: "192.168.0.100-192.168.0.199"
+        metallb_start: "192.168.0.100"
+        metallb_end: "192.168.0.199"
+        metallb_range: "{{metallb_start}}-{{metallb_end}}"
       children:
         rasp3s:
           hosts:

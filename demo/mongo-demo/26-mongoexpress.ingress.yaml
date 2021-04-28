@@ -1,0 +1,31 @@
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: mongoexpress-ingress
+#   namespace: mongo-demo
+# spec:
+#   rules:
+#   - host: mongoexpress.vato
+#     http:
+#       paths:
+#       - path: /
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: mongoexpress-service
+#             port:
+#               number: 8081
+
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: mongoexpress-ingress
+  namespace: mongo-demo
+spec:
+  rules:
+  - host: mongoexpress.vato
+    http:
+      paths:
+      - backend:
+          serviceName: mongoexpress-service
+          servicePort: 8081
