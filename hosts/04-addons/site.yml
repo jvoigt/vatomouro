@@ -12,13 +12,11 @@
       update_cache: yes
     when: ansible_distribution == "Ubuntu"
 
-- hosts: all
-  roles:
-    - 00-add_some_convience
-    - 01-prepare_cgroups
-    - 02-install_microk8s
-    - 03-create_cluster
+
 
 - hosts: rasp4-one
   roles:
-    - 99-add-kube-config-local
+    - 01-add_basic_microk8s_addons
+    - 02-add_load_balancing_microk8s_addons
+    - 03-add_monitoring
+

@@ -29,9 +29,6 @@ More infos in the microk8s docs: https://microk8s.io/docs/install-alternatives#h
   - on any Node
     - check with k get node
   - maybe: drain
-- install addons for microk8s
-  - this could move to another component
-  - microk8s enable dns storage metallb prometheus helm3 ha-cluster
 - create kube config so we can use kubectl from the local machine
 
 

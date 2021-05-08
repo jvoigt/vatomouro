@@ -1,6 +1,6 @@
 all:
   hosts:
-    # rasp3-one:
+    rasp3-one:
     rasp4-one:
     rasp4-two:
     rasp4-three:
@@ -28,3 +28,4 @@ all:
           hosts:
             rasp4-two:
             rasp4-three:
+            rasp4-four:
