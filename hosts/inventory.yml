@@ -4,6 +4,7 @@ all:
     rasp4-one:
     rasp4-two:
     rasp4-three:
+    rasp4-four:
   children:
     rasps:
       vars:
@@ -19,6 +20,7 @@ all:
             rasp4-one:
             rasp4-two:
             rasp4-three:
+            rasp4-four:
         cluster_main:
           hosts:
             rasp4-one:

@@ -7,20 +7,19 @@ The purpose of this is more for learning, so dont expect anything interessting o
 ## Specs of the clusters
 
 Hardware:
-- 3 Raspberry Pi 4 Mod. B
+- 4 Raspberry Pi 4 Mod. B
   - 8 GB RAM
-  - 16 GB SD-Card
+  - 16/64 GB SD-Card
 - 1 Raspberrs Pi 3 Mod. B
   - 1 GB RAM
   - 16 GB SD-Card
 - Ethernet-switch
 
 Software:
-- Ubuntu 20.10 server 64bit as host os
+- Ubuntu 21.04 server 64bit as host os
 - ansible for managing the hosts
 - mikrok8s as manager for k8s
 
-Sadly the rasp3 is not strong enough. so we just can use it for test. microk8s wont run on it.
 ### Network topology
 As my router is an old sh*ty tincan i cannot use real subnets or anything crasy...
 
@@ -42,8 +41,15 @@ Contains everything related to the setup of the host nodes.
 When everything is run there you should have a somewhat plain kubernetes cluster.
 Most of this is written with ansible.
 
-
 ## /cluster
 
 Contains everything running in the cluster.
 Subdirs are representing the namespaces with in the cluster.
+
+# Issues & learnings
+
+## you need enough memory
+Sadly the rasp3 is not strong enough. so we just can use it for test. microk8s wont run on it.
+
+## You need enough disk space
+16GB as SD Disks are not enough, when one nodes crashes the pods will move to the remaining one a and soon the diskspace will run out. 
